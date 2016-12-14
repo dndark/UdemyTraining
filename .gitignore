@@ -35,6 +35,7 @@ _testmain.go
 .DS_Store
 
 #other
+nu7hatch/*
 node_modules/
 bower_components/
 .tmp
