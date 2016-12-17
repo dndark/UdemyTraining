@@ -1,12 +1,3 @@
-<<<<<<< Updated upstream
-package _1
-
-import "fmt"
-
-func PrintVar(){
-    fmt.Println(Myname)
-    fmt.Println(yourName)
-=======
 package main
 
 import "fmt"
@@ -25,5 +16,4 @@ func main(){
 
 func foo(){
 	fmt.Println(x)
->>>>>>> Stashed changes
 }
