@@ -1,0 +1,21 @@
+Method and Function:
+    Method are function. Method is implement some Struct or type
+    Ex:
+    Func __ methodName returnT {
+        Return returnT
+    }
+
+Function, Method with pointer
+    Function with a pointer argument must past in a pointer.
+    Method with a pointer or non-pointer receiver(v or p in the below example) can use either pass in pointer and non-pointer.
+    Ex:
+    var v Vertex
+    ScaleFunc(v)  // Compile error!
+    ScaleFunc(&v) // OK
+
+    var v Vertex
+    v.Scale(5)  // OK
+    p := &v
+    p.Scale(10) // OK
+
+Everything in go is passing by VALUE !!
