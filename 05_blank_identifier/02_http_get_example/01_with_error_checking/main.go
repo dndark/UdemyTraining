@@ -19,5 +19,6 @@ func main() {
 		log.Fatal(err)
 		return
 	}
+
 	fmt.Printf("%s", page)
 }
