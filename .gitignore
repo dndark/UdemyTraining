@@ -3,7 +3,7 @@
 *.o
 *.a
 *.so
-*.geturl.go
+geturl.go
 
 # Folders
 _obj
