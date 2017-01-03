@@ -2,8 +2,10 @@ package main
 
 import (
 	"flag"
+	"github.com/go_chat/trace"
 	"log"
 	"net/http"
+	"os"
 	"path/filepath"
 	"sync"
 	"text/template"
@@ -25,12 +27,15 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	r := newRoom()
+	r.tracer = trace.New(os.Stdout)
 	var addr = flag.String("addr", ":8080", "The addr of the application.")
 	flag.Parse() // parse the flags
 
 	http.Handle("/", &templateHandler{filename: "chat.html"})
-
+	http.Handle("/room", r)
 	// get the room going
+	go r.run()
 
 	// start the web server
 	log.Println("Starting web server on", *addr)
