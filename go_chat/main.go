@@ -3,16 +3,18 @@ package main
 import (
 	"flag"
 	"github.com/UdemyTraining/go_chat/trace"
+	"github.com/stretchr/gomniauth"
+	"github.com/stretchr/gomniauth/providers/facebook"
+	"github.com/stretchr/gomniauth/providers/github"
+	"github.com/stretchr/gomniauth/providers/google"
 	"log"
 	"net/http"
 	"os"
 	"path/filepath"
 	"sync"
 	"text/template"
-	"github.com/stretchr/gomniauth"
-	"github.com/stretchr/gomniauth/providers/facebook"
-	"github.com/stretchr/gomniauth/providers/github"
-	"github.com/stretchr/gomniauth/providers/google"
+	"github.com/stretchr/objx"
+	"fmt"
 )
 
 // templ represents a single template
@@ -27,9 +29,17 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	t.once.Do(func() {
 		t.templ = template.Must(template.ParseFiles(filepath.Join("templates", t.filename)))
 	})
+	data := map[string]interface{}{
+		"Host": r.Host,
+	}
+	fmt.Println(r.Host)
+	if authCookie, err := r.Cookie("auth"); err == nil {
+		data["UserData"] = objx.MustFromBase64(authCookie.Value)
+	}
+
+	t.templ.Execute(w, data)
 	t.templ.Execute(w, r)
 }
-
 
 func main() {
 	r := newRoom()
@@ -38,12 +48,12 @@ func main() {
 	flag.Parse() // parse the flags
 	gomniauth.SetSecurityKey("gMmSLu5Veqvei2sAYVUSoTwb")
 	gomniauth.WithProviders(
-		facebook.New("462137771096-q3uqmav00bi5d3atn42f4g2fr47jfc4a.apps.googleusercontent.com","gMmSLu5Veqvei2sAYVUSoTwb",
-		"http://localhostL8080/auth/callback/facebook"),
-		github.New("key","secret",
-		"http://localhostL8080/auth/callback/github"),
-		google.New("key","secret",
-			"http://localhostL8080/auth/callback/google"),
+		google.New("462137771096-q3uqmav00bi5d3atn42f4g2fr47jfc4a.apps.googleusercontent.com", "gMmSLu5Veqvei2sAYVUSoTwb",
+			"http://localhost:8080/auth/callback/google"),
+		github.New("key", "secret",
+			"http://localhost:8080/auth/callback/github"),
+		facebook.New("key", "secret",
+			"http://localhost:8080/auth/callback/facebook"),
 	)
 
 	http.Handle("/", MustAuth(&templateHandler{filename: "chat.html"}))
