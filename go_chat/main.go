@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	"github.com/go_chat/trace"
+	"github.com/UdemyTraining/go_chat/trace"
 	"log"
 	"net/http"
 	"os"

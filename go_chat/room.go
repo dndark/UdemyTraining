@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/go_chat/trace"
+	"github.com/UdemyTraining/go_chat/trace"
 	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
